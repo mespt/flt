@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Literacy Training</title>
+    <title>Financia Literacy Training</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         * {
@@ -154,7 +154,125 @@
             transform: translateX(4px);
         }
 
-        /* Removed unused Document List styles */
+        /* Document List Page Styles */
+        .document-list-page {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .document-list-page.active {
+            display: flex;
+        }
+
+        .documents-list-container {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-header {
+            padding: 2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .list-subtitle {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .documents-list {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .document-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .document-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.05), transparent);
+            transition: left 0.4s ease;
+        }
+
+        .document-item:hover::before {
+            left: 100%;
+        }
+
+        .document-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .document-icon {
+            font-size: 2.5rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .document-details {
+            flex: 1;
+        }
+
+        .document-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .document-description {
+            color: #657786;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .document-arrow {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            min-width: 40px;
+        }
+
+        .document-item:hover .document-arrow {
+            transform: translateX(4px);
+        }
+
         .pdf-viewer-page {
             display: none;
             flex-direction: column;
@@ -492,46 +610,38 @@
                 font-size: 0.8rem;
             }
         }
-        .landing-footer {
-            text-align: center;
-            color: #2c3e50;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 1rem;
-            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.05);
-        }
     </style>
 </head>
 <body>
     <!-- Landing Page -->
     <div class="landing-page" id="landing-page">
         <div class="landing-header">
-            <h1 class="landing-title">FINANCIAL LITERACY TRAINING</h1>
-            <p class="landing-subtitle">Welcome to the Financial Literacy Training.<br>Use the links below to access the training program, provide feedback, and join live interactive discussions during the sessions.</p>
+            <h1 class="landing-title">Financial Literacy Training</h1>
+            <p class="landing-subtitle">Document Portal</p>
         </div>
         
         <div class="documents-grid">
             <div class="grid-container">
-                <div class="document-card" onclick="openDocument('training-program', 'Training Program', 'training-program.pdf')">
+                <!-- Program now opens a list with Day 1 / Day 2 -->
+                <div class="document-card" onclick="openDocumentList('programs', 'Programs')">
                     <span class="card-icon">🗓️</span>
-                    <h3 class="card-title">🗓️ Training Program</h3>
-                    <p class="card-description">View or download the full training agenda, including session topics, facilitators, and time schedule.</p>
+                    <h3 class="card-title">Program</h3>
+                    <p class="card-description">Full schedule of sessions, speakers, and event activities.</p>
                     <div class="card-footer">
                         <span class="card-type">View Program</span>
                         <div class="card-arrow">→</div>
                     </div>
                 </div>
-
-                <div class="document-card" onclick="window.open('#', '_blank')">
-                    <span class="card-icon">🗳️</span>
-                    <h3 class="card-title">🗳️ Feedback Form</h3>
-                    <p class="card-description">Share your feedback about the training sessions to help us improve future engagements.</p>
+                
+                <div class="document-card" onclick="openDocumentList('value-chain', 'Presentations')">
+                    <span class="card-icon">🖥️</span>
+                    <h3 class="card-title">Participants Manual</h3>
+                    <p class="card-description">View session materials.</p>
                     <div class="card-footer">
-                        <span class="card-type">Submit Feedback</span>
+                        <span class="card-type">Manual</span>
                         <div class="card-arrow">→</div>
                     </div>
                 </div>
-
                 <div class="document-card" onclick="window.open('https://app.sli.do/event/8uC2d1vCz7xkyfCVXyjaeV', '_blank')">
                     <span class="card-icon">💬</span>
                     <h3 class="card-title">💬 Interactive Session (Slido)</h3>
@@ -541,14 +651,42 @@
                         <div class="card-arrow">→</div>
                     </div>
                 </div>
+                <!--<div class="document-card" onclick="window.open('#', '_blank')">-->
+                <!--    <span class="card-icon">🗃️</span>-->
+                <!--    <h3 class="card-title">Photos</h3>-->
+                <!--    <p class="card-description">Browse event highlights captured throughout the day.</p>-->
+                <!--    <div class="card-footer">-->
+                <!--        <span class="card-type">See Highlights</span>-->
+                <!--        <div class="card-arrow">→</div>-->
+                <!--    </div>-->
+                <!--</div>-->
             </div>
-        </div>
-        <div class="landing-footer">
-            <p>© MESPT 2026</p>
         </div>
     </div>
 
-    <!-- Removed Document List Page (not used) -->
+    <!-- Document List Page -->
+    <div class="document-list-page" id="document-list-page">
+        <div class="header">
+            <div class="header-left">
+                <!-- List page back always returns to landing -->
+                <button class="back-btn" onclick="goBackToLanding()">
+                    ← Back
+                </button>
+                <h1 class="title" id="list-title">📄 Document List</h1>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="documents-list-container">
+                <div class="list-header">
+                    <h2 class="list-subtitle" id="list-subtitle">Select a document to view</h2>
+                </div>
+                <div class="documents-list" id="documents-list">
+                    <!-- Documents will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- PDF Viewer Page -->
     <div class="pdf-viewer-page" id="pdf-viewer-page">
@@ -556,7 +694,8 @@
         
         <div class="header">
             <div class="header-left">
-                <button class="back-btn" onclick="goBackToLanding()">
+                <!-- Viewer back uses previous-page logic -->
+                <button class="back-btn" onclick="goBackToPreviousPage()">
                     ← Back
                 </button>
                 <button class="download-btn" id="download-btn" onclick="downloadDocument()" disabled>
@@ -600,33 +739,119 @@
             constructor() {
                 this.currentDocument = null;
                 this.pdfViewer = null;
-                this.currentPage = 'landing';
+                this.currentPage = 'landing'; // 'landing', 'list', 'viewer'
+                this.currentCategory = null;
+                this.previousPage = null;
+
+                this.valueChainDocuments = [
+                    {
+                        id: 'roots-guide',
+                        name: 'Training Manual',
+                        description: 'Participant Training Manual',
+                        path: 'manual.pdf',
+                        icon: '🖥️'
+                    }
+                ];
+
+                // New: Program documents (Day 1 / Day 2)
+                this.programDocuments = [
+                    {
+                        id: 'program-day1',
+                        name: 'Workshop Program',
+                        description: 'Financial Literacy Training of Trainers Workshop Program: Date: 2nd -6th February, 2026',
+                        path: 'training-program.pdf', // TODO: set actual path
+                        icon: '🗓️'
+                    }
+                ];
+
                 this.initializePortal();
             }
             
             initializePortal() {
-                // Set PDF.js worker
                 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
             }
             
             openDocument(docId, title, pdfPath) {
+                // Clean up existing viewer if present to avoid conflicts
+                if (this.pdfViewer) {
+                    this.pdfViewer.cleanup();
+                    this.pdfViewer = null;
+                }
+
                 // Hide landing page and show PDF viewer
                 document.getElementById('landing-page').style.display = 'none';
+                document.getElementById('document-list-page').classList.remove('active');
                 document.getElementById('pdf-viewer-page').classList.add('active');
                 
                 // Update document title
                 document.getElementById('document-title').textContent = `📄 ${title}`;
                 
+                // Remember where we came from
+                this.previousPage = this.currentPage;
+
                 // Initialize PDF viewer for this document
                 this.pdfViewer = new ContinuousPDFViewer(pdfPath);
                 this.currentDocument = { id: docId, title, path: pdfPath };
                 this.currentPage = 'viewer';
             }
             
+            openDocumentList(category, title) {
+                // Clean up any current viewer
+                if (this.pdfViewer) {
+                    this.pdfViewer.cleanup();
+                    this.pdfViewer = null;
+                }
+
+                // Hide landing page and show document list
+                document.getElementById('landing-page').style.display = 'none';
+                document.getElementById('pdf-viewer-page').classList.remove('active');
+                document.getElementById('document-list-page').classList.add('active');
+                
+                // Update list title
+                document.getElementById('list-title').textContent = ` ${title}`;
+                document.getElementById('list-subtitle').textContent = 'Select a document to view';
+                
+                this.currentCategory = category;
+                this.previousPage = 'landing';
+                this.currentPage = 'list';
+
+                // Populate document list based on category
+                this.populateDocumentList(category);
+            }
+            
+            populateDocumentList(category) {
+                const listContainer = document.getElementById('documents-list');
+                listContainer.innerHTML = '';
+                
+                let documents = [];
+                if (category === 'value-chain') {
+                    documents = this.valueChainDocuments;
+                } else if (category === 'programs') {
+                    documents = this.programDocuments;
+                }
+                
+                documents.forEach(doc => {
+                    const documentItem = document.createElement('div');
+                    documentItem.className = 'document-item';
+                    documentItem.onclick = () => this.openDocument(doc.id, doc.name, doc.path);
+                    
+                    documentItem.innerHTML = `
+                        <div class="document-icon">${doc.icon}</div>
+                        <div class="document-details">
+                            <div class="document-name">${doc.name}</div>
+                            <div class="document-description">${doc.description}</div>
+                        </div>
+                        <div class="document-arrow">→</div>
+                    `;
+                    
+                    listContainer.appendChild(documentItem);
+                });
+            }
             
             goBackToLanding() {
                 // Show landing page and hide other pages
                 document.getElementById('landing-page').style.display = 'flex';
+                document.getElementById('document-list-page').classList.remove('active');
                 document.getElementById('pdf-viewer-page').classList.remove('active');
                 
                 // Clean up PDF viewer if active
@@ -636,20 +861,40 @@
                 }
                 
                 this.currentDocument = null;
+                this.currentCategory = null;
+                this.previousPage = null;
                 this.currentPage = 'landing';
             }
             
-            // Removed goBackToPreviousPage (unused)
+            goBackToPreviousPage() {
+                if (this.currentPage === 'viewer') {
+                    if (this.previousPage === 'list' && this.currentCategory) {
+                        // Return to the list we came from
+                        document.getElementById('landing-page').style.display = 'none';
+                        document.getElementById('pdf-viewer-page').classList.remove('active');
+                        document.getElementById('document-list-page').classList.add('active');
+
+                        if (this.pdfViewer) {
+                            this.pdfViewer.cleanup();
+                            this.pdfViewer = null;
+                        }
+
+                        this.currentPage = 'list';
+                    } else {
+                        this.goBackToLanding();
+                    }
+                } else if (this.currentPage === 'list') {
+                    this.goBackToLanding();
+                }
+            }
             
             downloadDocument() {
                 if (!this.currentDocument) return;
                 
-                // Create a temporary link element
                 const link = document.createElement('a');
                 link.href = this.currentDocument.path;
                 link.download = this.currentDocument.title + '.pdf';
                 
-                // Trigger download
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -688,14 +933,11 @@
                 this.zoomOutBtn.addEventListener('click', () => this.zoomOut());
                 this.fitWidthBtn.addEventListener('click', () => this.fitToWidth());
                 
-                // Scroll event for progress tracking
                 this.viewer.addEventListener('scroll', () => this.updateProgress());
                 
-                // Keyboard shortcuts
                 this.keyboardHandler = (e) => this.handleKeyboard(e);
                 document.addEventListener('keydown', this.keyboardHandler);
                 
-                // Window resize
                 this.resizeHandler = () => this.handleResize();
                 window.addEventListener('resize', this.resizeHandler);
             }
@@ -877,7 +1119,7 @@
                         break;
                     case 'Escape':
                         event.preventDefault();
-                        documentPortal.goBackToLanding();
+                        documentPortal.goBackToPreviousPage();
                         break;
                     case 's':
                         if (event.ctrlKey || event.metaKey) {
@@ -898,7 +1140,6 @@
             }
             
             cleanup() {
-                // Remove event listeners
                 if (this.keyboardHandler) {
                     document.removeEventListener('keydown', this.keyboardHandler);
                 }
@@ -906,17 +1147,14 @@
                     window.removeEventListener('resize', this.resizeHandler);
                 }
                 
-                // Clear timeouts
                 if (this.resizeTimeout) {
                     clearTimeout(this.resizeTimeout);
                 }
                 
-                // Reset progress bar
                 if (this.pageProgress) {
                     this.pageProgress.style.width = '0%';
                 }
                 
-                // Clear viewer
                 if (this.viewer) {
                     this.viewer.innerHTML = '';
                 }
@@ -930,19 +1168,25 @@
             documentPortal.openDocument(docId, title, pdfPath);
         }
 
+        function openDocumentList(category, title) {
+            documentPortal.openDocumentList(category, title);
+        }
+
         function goBackToLanding() {
             documentPortal.goBackToLanding();
+        }
+
+        function goBackToPreviousPage() {
+            documentPortal.goBackToPreviousPage();
         }
 
         function downloadDocument() {
             documentPortal.downloadDocument();
         }
 
-        // Initialize the portal when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             documentPortal = new DocumentPortal();
         });
     </script>
 </body>
 </html>
-
